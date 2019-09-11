@@ -3,6 +3,8 @@ require 'octopoller'
 require 'json'
 require 'pry'
 
+personal_access_token = ''
+
 # allow us to peek at http traffic
 debug_http = false
 if debug_http
@@ -16,8 +18,7 @@ if debug_http
   end
   Octokit.middleware = stack
 end
-# iandouglas
-personal_access_token = '0c655f9f45e0e6e00ebec38e12bae8847d49b901'
+
 @client = Octokit::Client.new(:access_token => personal_access_token)
 
 user = @client.user
