@@ -1,33 +1,53 @@
 # CardCannon
 
-Adapated from Waffle.io's CardCannon project (github.com/waffleio/cardcannon)
+This application is used to manage Turing's student facing projects. Instructors can write and maintain project stories in this repo, and use the scripts provided to populate a GitHub repo with issues. These issues can then be easily imported into a GitHub project as user stories. Once a GitHub project is created, instructors can use [Conveyor Belt](https://github.com/jmejia/conveyor-belt) to provide each student with a copy of the project board to be used for project management.
 
+## Setup
 
-## app.js
+1. Clone this repository
+1. Run `bundle install` from the command line
+1. Run `bundle update` from the command line
 
-Main application that runs on Glitch. Will listen for a GitHub issue for a supported repo where the title of the GitHub issue is `bootstrap <project-name>` where `project_name` is defined previously in the folder structure of this repo to have pre-built User Story cards written and ready to inject into that GitHub repo's issues stream.
+### GitHub Personal Access Token
 
-When used in conjunction with Waffle.io, the repo's waffle board will show all user story cards with dependencies and requirements for implementation.
+In order to use the GitHub API, you will need to provide a personal access token. In order to obtain the token:
 
-## build-cannon.py
+1. Log in to your GitHub account
+1. Go to `Settings/Developer Settings/Personal access tokens`
+1. Click `Generate new token`
+1. Enter a name, for example `card cannon`
+1. Select the all the `repo` scopes
+1. Click `Generate token`
+1. Copy the generated token.
 
-Requires Python 2, and builds a set of CardCannon-compatible files for `app.js` to inject as GitHub issues. Also builds a main "stories.md" document for your project.
+Once you have obtained the token, you can add it to this application:
 
-### Setup
+1. Open `slam.rb` in this repository.
+1. Find the line near the top of the file `personal_access_token = ''`
+1. Inside the empty string, paste your personal access token.
 
-Make a folder for your project name, like "little_shop"
+It is not recommended that you commit or push you personal access token.
 
-Within that folder, create one or more files ending in .ini that will process as user stories and epics for the project. Also include a `story-checklist.md` file; this markdown will be appended to every user story (but not epics) so GitHub and Waffle can utilize markdown checkboxes for progress. You can leave this file blank if you want but it must exist.
+## Usage
 
-### INI file structure
+### Writing a Project
 
-Structure your INI files in this format:
+Make a folder for your project name, like "little_shop", in this repository.
+
+Within that folder, create one or more files ending in .ini. Each .ini file represents an epic. Each story within that file is part of the epic. Epics will be processed alphabetically, so it is recommended that you start your file names with numbers to specify the order of epics.
+
+You will also need to include a `story-checklist.md` file; this markdown will be appended to every user story (but not epics) so GitHub can utilize markdown checkboxes for progress. You can leave this file blank if you want but it must exist.
+
+#### INI file structure
+
+Structure your INI files in the following format.
+
+Each "slug" is a unique identifier for the story or epic. It can be anything you want.
 
 ```
-[story-slug]
+[epic-slug]
 title = Epic: Whatever
 labels: whatever
-child_of: story-slug-of-parent
 story_text: line 1 of story
     line 2 of story
     line 3 of story
@@ -36,7 +56,7 @@ story_text: line 1 of story
 [story-slug-2]
 title = A Very Whatever Story
 labels: whatever
-child_of: story-slug
+child_of: epic-slug
 story_text: line 1 of story
     line 2 of story
     line 3 of story
@@ -45,20 +65,19 @@ story_text: line 1 of story
 [story-slug-3]
 title = A Very Whatever Story
 labels: whatever
-child_of: story-slug
+child_of: epic-slug
 depends_on: story-slug-2
 story_text: line 1 of story
     line 2 of story
     line 3 of story
     etc
-
 ```
 
 #### Labels
 
 Labels are used mostly for project management tools to 'link' common-themed stories together across epics. For example, multiple epics might deal with a particular resource or module.
 
-The "build-cannon.py" script will also add two labels to each non-epic story: 'to do' and 'backlog'. Primarily these are for waffle.io. When these GitHub issues are generated and then initialize a waffle.io board, Waffle will move stories into a column named after that label. The "basic" waffle.io board uses a column called 'To Do', where the "advanced" waffle.io board uses a column called "Backlog". By adding both of these labels by default, Waffle should populate the board correctly no matter which board layout the students choose to initialize.
+The "build-cannon.py" script will also add two labels to each non-epic story: 'to do' and 'backlog'.
 
 #### Rationale/Excuses:
 
@@ -66,14 +85,9 @@ The "build-cannon.py" script will also add two labels to each non-epic story: 't
 - the INI section markers are slug names, these get turned into ID values later and the strings are discarded
 - the script will process INI files in whatever natural order your OS reads them, typically alphabetically
 
-### Run it
+#### More about stories.md
 
-`python build-cannon.py project_name`
-
-All output will go into the `_output/project_name` folder as `cards.json` and `cards/(story_id).md`. Deploy this whole repo to Glitch and you're all set.
-
-### More about stories.md
-This Python script also builds one big concatenated `stories.md` in the root of this project's folder where each epic is printed as-is, includes a markdown line separator of `---`, and numbers each story to look like this:
+The Python script also builds one big concatenated `stories.md` in the root of this project's folder where each epic is printed as-is, includes a markdown line separator of `---`, and numbers each story to look like this:
 
 ```
 [ ] done
@@ -86,3 +100,26 @@ When I visit my own profile page
 Then I see all of my profile data on the page except my password
 And I see a link to edit my profile data
 ```
+
+### Populating a repo with issues
+
+Once you have created your project locally in .ini format, you can populate a repo with issues by following these steps:
+
+1. run `python build-cannon.py <project directory>` where `<project directory>` is a folder in this repo that contains you ini files with user stories. You should see "outputing all stories per Waffle Cannon" if it was successful.
+  * ex `python build-cannon.py test_project`
+  * Requires Python 2. If you do not have Python 2 you will need to install it.
+1. run `ruby slam.rb <project directory> <GitHub user>/<GitHub repo name>` where `<GitHub user>` is the user or organization that owns the repository and `<GitHub repo name>` is the name of the repository.
+  * ex `ruby slam.rb test_project turingschool-examples/test_project`. This would assume there is a repository at `github.com/turingschool-examples/test_project`
+1. Navigate to the GitHub repository. You should your user stories in the repo's issues.
+
+### Creating a GitHub Project
+
+Once you have populated a repo with issues, you can create a project:
+
+1. In the GitHub repository, select the `projects` tab
+1. Click `Create a Project`. Give your project a name.
+1. Add some columns to the project board, for example `to do`, `in progress`, `done`, etc.
+1. Click `Add cards`
+1. You should now be able to drag your user stories into your project.
+
+Once your project is set up, you can use [Conveyor Belt](http://conveyorbelt.herokuapp.com/) to provide students with a forked repo and copy of the project board to streamline project management.
