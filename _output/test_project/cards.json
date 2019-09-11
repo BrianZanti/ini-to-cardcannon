@@ -2,8 +2,6 @@
   {
     "id": 1,
     "labels": [
-      "to do",
-      "backlog",
       "inbox",
       "app"
     ],
@@ -15,8 +13,6 @@
     ],
     "id": 2,
     "labels": [
-      "to do",
-      "backlog",
       "label-1"
     ],
     "title": "User Story 1, Great story title 1"
@@ -25,13 +21,14 @@
     "childOf": [
       1
     ],
+    "dep_titles": [
+      "- User Story 1, Great story title 1"
+    ],
     "dependsOn": [
       2
     ],
     "id": 3,
     "labels": [
-      "to do",
-      "backlog",
       "label-1",
       "label-2"
     ],
@@ -41,14 +38,16 @@
     "childOf": [
       1
     ],
+    "dep_titles": [
+      "- User Story 1, Great story title 1",
+      "- User Story 2, Great story title 2"
+    ],
     "dependsOn": [
       2,
       3
     ],
     "id": 4,
     "labels": [
-      "to do",
-      "backlog",
       "label-3"
     ],
     "title": "User Story 3, Great story title 3"
@@ -56,8 +55,6 @@
   {
     "id": 5,
     "labels": [
-      "to do",
-      "backlog",
       "inbox",
       "app"
     ],
@@ -70,8 +67,6 @@
     ],
     "id": 6,
     "labels": [
-      "to do",
-      "backlog",
       "label-1"
     ],
     "title": "User Story 4, Great story title 4"
