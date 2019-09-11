@@ -16,7 +16,7 @@ In order to use the GitHub API, you will need to provide a personal access token
 1. Go to `Settings/Developer Settings/Personal access tokens`
 1. Click `Generate new token`
 1. Enter a name, for example `card cannon`
-1. Select the all the `repo` scopes
+1. Select all the `repo` scopes
 1. Click `Generate token`
 1. Copy the generated token.
 
