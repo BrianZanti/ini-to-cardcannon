@@ -106,8 +106,8 @@ And I see a link to edit my profile data
 Once you have created your project locally in .ini format, you can populate a repo with issues by following these steps:
 
 1. run `python build-cannon.py <project directory>` where `<project directory>` is a folder in this repo that contains you ini files with user stories. You should see "outputing all stories per Waffle Cannon" if it was successful.
-  * ex `python build-cannon.py test_project`
-  * Requires Python 2. If you do not have Python 2 you will need to install it.
+    * ex `python build-cannon.py test_project`
+    * Requires Python 2. If you do not have Python 2 you will need to install it.
 1. run `ruby slam.rb <project directory> <GitHub user>/<GitHub repo name>` where `<GitHub user>` is the user or organization that owns the repository and `<GitHub repo name>` is the name of the repository.
   * ex `ruby slam.rb test_project turingschool-examples/test_project`. This would assume there is a repository at `github.com/turingschool-examples/test_project`
 1. Navigate to the GitHub repository. You should your user stories in the repo's issues.
