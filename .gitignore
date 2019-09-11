@@ -8,3 +8,4 @@ coverage
 cardcannon/bin
 cardcannon/lib/python2.7
 .vscode
+_output
